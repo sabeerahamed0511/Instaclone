@@ -4,6 +4,7 @@ import camera_icon from "../images/camera_icon.png"
 import { Link, Outlet, useNavigate } from 'react-router-dom';
 import { deleteCurrentUser, deleteToken, getToken } from '../utils/tokenStorage';
 import { UserList } from '../contexts/PostviewContext';
+import { BASE_URL } from '../utils/api-util';
 
 export default function Postview() {
 
@@ -33,7 +34,7 @@ export default function Postview() {
                     <div className='img-container' id='dp'>
                         <Link to={`../user/${user._id}`} >
                         {user.profile_picture ?
-                        <img src={`http://localhost:5000/users/${user._id}/dp/${user.profile_picture}`} alt="dp" /> :
+                        <img src={`${BASE_URL}/users/${user._id}/dp/${user.profile_picture}`} alt="dp" /> :
                         <img src={`${DP}`} alt="dp" /> }
                         </Link>
                     </div>

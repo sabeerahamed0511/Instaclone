@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import heart_icon from "../images/heart_icon.png"
 import rocket_icon from "../images/rocket_icon.png"
 import more_icon from "../images/more_icon.svg"
-import { updateLikes, updateUser } from "../utils/api-util";
+import { BASE_URL, updateLikes, updateUser } from "../utils/api-util";
 import { useContext } from "react";
 import { UserList } from "../contexts/PostviewContext";
 
@@ -37,7 +37,7 @@ export default function Post({ post }) {
                 <div className="userDpAndName">
                     <div className='img-container' id='dp'>
                         {dp ?
-                            <img src={`http://localhost:5000/users/${post.user}/dp/${dp}`} alt="dp" /> :
+                            <img src={`${BASE_URL}/users/${post.user}/dp/${dp}`} alt="dp" /> :
                             <img src={`${DP}`} alt="dp" />}
                     </div>
                     <p>
@@ -51,7 +51,7 @@ export default function Post({ post }) {
             </section>
 
             <section className='post-img' onDoubleClick={likePicture}>
-                <img src={`http://localhost:5000/images/${PostImage}`} alt='Not available' />
+                <img src={`${BASE_URL}/images/${PostImage}`} alt='Not available' />
             </section>
 
             <section className='post-footer'>

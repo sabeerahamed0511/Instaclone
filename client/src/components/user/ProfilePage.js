@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import UserPostProfile from "./UserPostProfile";
 import DpForm from "./DpForm";
+import { BASE_URL } from "../../utils/api-util";
 
 export function ProfilePage() {
 
@@ -27,7 +28,7 @@ export function ProfilePage() {
                 <section className="left-section">
                     <div className='img-container' id='dp'>
                         {user.profile_picture ?
-                            <img src={`http://localhost:5000/users/${user._id}/dp/${user.profile_picture}`} alt="dp" /> :
+                            <img src={`${BASE_URL}/users/${user._id}/dp/${user.profile_picture}`} alt="dp" /> :
                             <img src={`${DP}`} alt="dp" />}
                     </div>
                     <h3>{user.name}</h3>

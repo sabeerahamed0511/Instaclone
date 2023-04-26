@@ -2,7 +2,7 @@ import React from "react";
 import heart_icon from "../../images/heart_icon.png"
 import rocket_icon from "../../images/rocket_icon.png"
 import more_icon from "../../images/more_icon.svg"
-import { deleteUser, updateLikes } from "../../utils/api-util";
+import { BASE_URL, deleteUser, updateLikes } from "../../utils/api-util";
 import { useContext } from "react";
 import { UserList } from "../../contexts/PostviewContext";
 import { useState } from "react";
@@ -54,7 +54,7 @@ export default function UserPostProfile({ postFromUser }) {
             </section>
 
             <section className='post-img' onDoubleClick={likePicture}>
-                <img src={`http://localhost:5000/images/${PostImage}`} alt='Not available' />
+                <img src={`${BASE_URL}/images/${PostImage}`} alt='Not available' />
             </section>
 
             <section className='post-footer'>
