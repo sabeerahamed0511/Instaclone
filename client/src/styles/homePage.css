@@ -1,0 +1,17 @@
+#home-page {
+    height: 100vh;
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px
+}
+
+#home-page h1 {
+    color: green;
+    font-family: 'Lobster', cursive;;
+}
+
+#home-page p {
+    margin: 20px 0;
+}
