@@ -26,7 +26,7 @@ export default function Post({ post }) {
         updateUser(post.user)
         .then(res => {
             if(res.status === "Success") {
-                setDp(res.user.profile_picture);
+                setDp(res.user.profile_picture.url);
             }
         })
     })
@@ -37,7 +37,7 @@ export default function Post({ post }) {
                 <div className="userDpAndName">
                     <div className='img-container' id='dp'>
                         {dp ?
-                            <img src={`${BASE_URL}/users/${post.user}/dp/${dp}`} alt="dp" /> :
+                            <img src={dp} alt="dp" /> :
                             <img src={`${DP}`} alt="dp" />}
                     </div>
                     <p>
@@ -51,7 +51,7 @@ export default function Post({ post }) {
             </section>
 
             <section className='post-img' onDoubleClick={likePicture}>
-                <img src={`${BASE_URL}/images/${PostImage}`} alt='Not available' />
+                <img src={PostImage.url} alt='Not available' />
             </section>
 
             <section className='post-footer'>

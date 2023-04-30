@@ -17,26 +17,37 @@ export default function NewPost() {
     const [loader, setLoader] = useState(false);
     const [formData, setFormData] = useState({
         image : "",
-        author : user.name,
+        name : user.name,
         location : "",
-        description : ""
+        description : "",
+        user : user._id
     })
+
+    function base64(file) {
+        return new Promise((res, rej) => {
+             let fileReader = new FileReader();
+             fileReader.readAsDataURL(file);
+             fileReader.onload = () => {
+                res(fileReader.result)
+            };
+        })
+    }
     
-    function formValidation(e) {
+    async function formValidation(e) {
         e.preventDefault();
         setLoader(true);
 
-        const post = new FormData(e.target);
-        post.append("user", user._id);
-        
-        addNewPost(post)
+        // const post = new FormData(e.target);
+        // post.append("user", user._id);
+        formData.PostImage = await base64(formData.image);
+
+        addNewPost(formData)
         .then(res => {
             if(res.status === "Success") {
                 addPost(res.data);
                 addPreview("");
                 setFormData({
                     image : "",
-                    author : "",
                     location : "",
                     description : ""
                 });
@@ -44,7 +55,7 @@ export default function NewPost() {
                 navigate("../all")
             } else {
                 setLoader(false);
-                alert("Failed to create post, try again...")
+                alert(res.message)
             }
             
         })
@@ -72,11 +83,11 @@ export default function NewPost() {
                     {preview ? <ImagePreview /> : null}
                 </div>
                 <div className="input-field row-1">
-                    <input type={"text"} id="author" name="name" placeholder="Author" value={formData.author} readOnly required onChange={(e) => {
+                    <input type={"text"} id="author" name="name" placeholder="Author" value={formData.name} readOnly required onChange={(e) => {
                         setFormData(pre => {
                             return {
                                 ...pre,
-                                author : e.target.value
+                                name : e.target.value
                             }
                         })
                     }} />

@@ -1,7 +1,7 @@
 import { getToken, setCurrentUser } from "./tokenStorage";
 
-// export const BASE_URL = "http://localhost:5000"
-export const BASE_URL = "https://instaclone-server-8j4r.onrender.com"
+export const BASE_URL = "http://localhost:5000"
+// export const BASE_URL = "https://instaclone-server-8j4r.onrender.com"
 
 export function getAllPost() {
 
@@ -19,9 +19,11 @@ export function addNewPost(post) {
     return fetch(`${BASE_URL}/post`, {
         method: "POST",
         headers: {
-            "Authorization": getToken()
+            "Authorization": getToken(),
+            "content-type" : "application/json",
+            "accept" : "application/json"
         },
-        body: post
+        body: JSON.stringify(post)
     })
         .then(res => res.json())
         .catch(err => alert(err.message));
@@ -30,7 +32,12 @@ export function addNewPost(post) {
 export function updateUserDp(dp, id) {
     return fetch(`${BASE_URL}/users/${id}`, {
         method: "PUT",
-        body: dp
+        headers: {
+            "Authorization": getToken(),
+            "content-type" : "application/json",
+            "accept" : "application/json"
+        },
+        body: JSON.stringify({dp})
     })
         .then(res => res.json())
         .catch(err => alert(err.message));

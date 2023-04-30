@@ -54,7 +54,7 @@ export default function UserPostProfile({ postFromUser }) {
             </section>
 
             <section className='post-img' onDoubleClick={likePicture}>
-                <img src={`${BASE_URL}/images/${PostImage}`} alt='Not available' />
+                <img src={PostImage.url} alt='Not available' />
             </section>
 
             <section className='post-footer'>

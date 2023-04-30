@@ -12,7 +12,7 @@ const userSchema = new mongoose.Schema({
         unique : true
     },
     profile_picture : {
-        type : String,
+        type : Object,
         default : null
     },
     posts : {
