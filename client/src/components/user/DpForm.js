@@ -5,34 +5,46 @@ import { addNewPost, updateUserDp } from "../../utils/api-util";
 import ImagePreview from "../ImagePreview";
 import { getToken } from "../../utils/tokenStorage";
 
-export default function DpForm({setFalse}) {
+export default function DpForm({ setFalse }) {
 
     const navigate = useNavigate();
     useEffect(() => {
-        if(!getToken()) navigate("/login");
+        if (!getToken()) navigate("/login");
     }, []);
 
     const [boo, setBoo] = useState(true);
-    const {user, addUser, addPreview, preview} = useContext(UserList);
-    
-    function formValidation(e) {
-        e.preventDefault();
-setBoo(false);
-        const dp = new FormData(e.target);
-        
-        updateUserDp(dp, user._id)
-        .then(res => {
-            if(res.status === "Success") {
-                addUser(res.user);
-                addPreview("");
-                setBoo(true);
-                setFalse();
-            } else {
-                setBoo(true)
-                alert("Failed to upload, try again...")
-            }
-            
+    const { user, addUser, addPreview, preview } = useContext(UserList);
+    const [formData, setFormData] = useState({ image: "" });
+
+    function base64(file) {
+        return new Promise((res, rej) => {
+            let fileReader = new FileReader();
+            fileReader.readAsDataURL(file);
+            fileReader.onload = () => {
+                res(fileReader.result)
+            };
         })
+    }
+
+    async function formValidation(e) {
+        e.preventDefault();
+        setBoo(false);
+        // const dp = new FormData(e.target);
+        const dp = await base64(formData.image);
+
+        updateUserDp(dp, user._id)
+            .then(res => {
+                if (res.status === "Success") {
+                    addUser(res.user);
+                    addPreview("");
+                    setBoo(true);
+                    setFalse();
+                } else {
+                    setBoo(true)
+                    alert(res.message)
+                }
+
+            })
     }
 
     return <>
@@ -43,16 +55,17 @@ setBoo(false);
             }}>X</button>
             <form onSubmit={formValidation} >
                 <div className="input-field">
-                    <input type={"file"} id="file" class="custom-file-input" name="profile_picture" accept="image/*"  required onChange={(e) => {
+                    <input type={"file"} id="file" class="custom-file-input" name="profile_picture" accept="image/*" required onChange={(e) => {
                         addPreview(URL.createObjectURL(e.target.files[0]));
+                        setFormData(ex => ({...ex, image : e.target.files[0]}));
                     }} />
                 </div>
                 <div className="preview-container">
                     {preview ? <ImagePreview /> : null}
                 </div>
                 <div className="btn-container" >
-                <button type="submit">{boo ? "change" : <span className="loader"></span>}</button>
-            </div>
+                    <button type="submit">{boo ? "change" : <span className="loader"></span>}</button>
+                </div>
             </form>
         </div>
     </>

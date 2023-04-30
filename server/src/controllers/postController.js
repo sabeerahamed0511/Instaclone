@@ -1,8 +1,7 @@
 require("dotenv").config();
 const Post = require("../models/post");
 const User = require("../models/user");
-const { GridFSBucket, MongoClient } = require("mongodb");
-const mongoClient = new MongoClient(process.env.DATABASE_URL);
+const cloudinary = require("../middleware/cloudinary");
 
 const controller = {};
 
@@ -17,12 +16,16 @@ controller.get = async (req, res) => {
 
 controller.post = async (req, res) => {
     try {
+        let uploadedFile = await cloudinary.v2.uploader.upload(req.body.PostImage, {folder: "INSTACLONE-POSTS" });
+
         let newPost = await new Post({
             ...req.body,
-            PostImage: req.file.filename
+            PostImage: {
+                url : uploadedFile.secure_url,
+                id : uploadedFile.public_id
+            }
         })
         newPost = await newPost.save();
-        //ADDIGN POST  ID TO USER
         await User.findByIdAndUpdate(req.body.user, { $push: { posts: newPost._id } });
         res.status(201).json({ status: "Success", data: newPost });
     } catch (err) {
@@ -46,43 +49,13 @@ controller.updateLikes = async (req, res) => {
     }
 }
 
-controller.download = async (req, res) => {
-
-    try {
-        await mongoClient.connect();
-        const db = mongoClient.db(process.env.DB_NAME);
-        const bucket = new GridFSBucket(db, {
-            bucketName: process.env.DB_COLLECTION
-        });
-
-        const image = bucket.openDownloadStreamByName(req.params.name);
-        image.on("data", data => res.status(200).write(data));
-        image.on("error", err => res.status(400).send({ msg: err.message }));
-        image.on("end", () => res.end());
-    } catch (err) {
-        res.status(500).send({ msg: err.message });
-    }
-}
-
 controller.delete = async (req, res) => {
     try {
-        await mongoClient.connect();
-        const db = mongoClient.db(process.env.DB_NAME);
-        const filesSchema = db.collection(process.env.DB_COLLECTION + ".files");
-        const chunksSchema = db.collection(process.env.DB_COLLECTION + ".chunks");
-
         let post = await Post.findById(req.params.id)
         if (!post) return res.status(404).json({ status: "Failed", message: "Invalid Id" });
-        //del chunck
-        let file = await filesSchema.findOne({filename : post.PostImage});
-        await chunksSchema.deleteMany({files_id : file._id});
-        //del file
-        await filesSchema.deleteOne({_id : file._id});
-        //del post
+        await cloudinary.v2.uploader.destroy(post.PostImage.id);
         await Post.findByIdAndDelete(req.params.id);
         res.status(200).json({ status: "Success" });
-
-
     } catch (err) {
         res.status(400).json({ status: "Failed", message: err.message });
     }

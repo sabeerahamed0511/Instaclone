@@ -34,8 +34,8 @@ export default function Postview() {
                     <div className='img-container' id='dp'>
                         <Link to={`../user/${user._id}`} >
                         {user.profile_picture ?
-                        <img src={`${BASE_URL}/users/${user._id}/dp/${user.profile_picture}`} alt="dp" /> :
-                        <img src={`${DP}`} alt="dp" /> }
+                        <img src={user.profile_picture.url} alt="dp" /> :
+                        <img src={DP} alt="dp" /> }
                         </Link>
                     </div>
                     <div className='img-container'>

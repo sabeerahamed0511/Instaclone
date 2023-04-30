@@ -26,8 +26,7 @@ router.post("/register", controller.register);
 //TO LOG IN
 router.post("/login", controller.login);
 
-router.put("/users/:id", controller.deleteDp, upload.single("profile_picture"), controller.updateDp);
+router.put("/users/:id", controller.deleteDp, controller.updateDp);
 
-router.get("/users/:id/dp/:name", controller.renderDp);
 
 module.exports = router;
