@@ -16,20 +16,24 @@ export function ProfilePage() {
     const { user, posts, addUser } = useContext(UserList);
     let [userPosts, setUserPosts] = useState([]);
     const [changeDp, setChangeDp] = useState(false);
+    const [loader, setLoader] = useState(true);
 
     useEffect(() => {
         if (!getToken()) navigate("/login");
 
         getAllUserPost(getCurrentUser()._id)
             .then(res => {
-                if (res.status === "Success") setUserPosts(res.data.reverse());
+                if (res.status === "Success") {
+                    setLoader(false);
+                    setUserPosts(res.data.reverse());
+                }
                 else alert(res.message);
             })
             .catch(err => alert(err.message))
         const currentUser = getCurrentUser();
         if (currentUser) addUser(currentUser);
     }, []);
-   
+
     return <>
         <div className="profilePage-container" >
             <header>
@@ -49,23 +53,24 @@ export function ProfilePage() {
 
             </header>
             <div className="userPosts">
-                <div className="posts-grid" >
-                    {userPosts.map(post => {
-                        return <UserPostProfile key={post._id} postFromUser={post}
-                            updateUserPost={(data) => {
-                                setUserPosts(userPosts.map(ex => {
-                                    if (data._id === ex._id) return data
-                                    return ex
-                                }))
-                            }}
-                            deleteUserPostList={(data) => {
-                                setUserPosts(userPosts.filter(ex => {
-                                    if (data._id === ex._id) return false
-                                    return true
-                                }))
-                            }} />
-                    })}
-                </div>
+                {loader ? <div className="post-loader" ></div> :
+                    <div className="posts-grid" >
+                        {userPosts.map(post => {
+                            return <UserPostProfile key={post._id} postFromUser={post}
+                                updateUserPost={(data) => {
+                                    setUserPosts(userPosts.map(ex => {
+                                        if (data._id === ex._id) return data
+                                        return ex
+                                    }))
+                                }}
+                                deleteUserPostList={(data) => {
+                                    setUserPosts(userPosts.filter(ex => {
+                                        if (data._id === ex._id) return false
+                                        return true
+                                    }))
+                                }} />
+                        })}
+                    </div>}
             </div>
 
         </div>

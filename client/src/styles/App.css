@@ -359,6 +359,20 @@
   animation: loader 3s linear infinite;
 }
 
+.post-loader {
+  margin-top: 30px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 5px solid rgb(165, 164, 164);
+  border-top: 5px solid green;
+  animation: post-loader 2s infinite linear;
+}
+
+@keyframes post-loader {
+  100% {transform: rotate(360deg);}
+}
+
 @keyframes loader {
   0% {
     left: 0
