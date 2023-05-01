@@ -5,23 +5,31 @@ import { useState } from "react";
 import { useEffect } from "react";
 import UserPostProfile from "./UserPostProfile";
 import DpForm from "./DpForm";
-import { BASE_URL } from "../../utils/api-util";
+import { BASE_URL, getAllUserPost } from "../../utils/api-util";
+import { getCurrentUser, getToken } from "../../utils/tokenStorage";
+import { useNavigate } from "react-router-dom";
 
 export function ProfilePage() {
 
+    const navigate = useNavigate();
     const DP = "https://thumbs.dreamstime.com/b/default-avatar-profile-icon-social-media-user-vector-default-avatar-profile-icon-social-media-user-vector-portrait-176194876.jpg";
-    const { user, posts } = useContext(UserList);
+    const { user, posts, addUser } = useContext(UserList);
     let [userPosts, setUserPosts] = useState([]);
     const [changeDp, setChangeDp] = useState(false);
 
     useEffect(() => {
-        let allPosts = posts.filter(({ _id }) => {
-            if (user.posts.indexOf(_id) === -1) return false;
-            return true;
-        });
-        setUserPosts(allPosts);
-    }, [posts, user]);
+        if (!getToken()) navigate("/login");
 
+        getAllUserPost(getCurrentUser()._id)
+            .then(res => {
+                if (res.status === "Success") setUserPosts(res.data.reverse());
+                else alert(res.message);
+            })
+            .catch(err => alert(err.message))
+        const currentUser = getCurrentUser();
+        if (currentUser) addUser(currentUser);
+    }, []);
+   
     return <>
         <div className="profilePage-container" >
             <header>
@@ -41,14 +49,28 @@ export function ProfilePage() {
 
             </header>
             <div className="userPosts">
-                {userPosts.map(post => {
-                    return <UserPostProfile key={post._id} postFromUser={post} />
-                })}
+                <div className="posts-grid" >
+                    {userPosts.map(post => {
+                        return <UserPostProfile key={post._id} postFromUser={post}
+                            updateUserPost={(data) => {
+                                setUserPosts(userPosts.map(ex => {
+                                    if (data._id === ex._id) return data
+                                    return ex
+                                }))
+                            }}
+                            deleteUserPostList={(data) => {
+                                setUserPosts(userPosts.filter(ex => {
+                                    if (data._id === ex._id) return false
+                                    return true
+                                }))
+                            }} />
+                    })}
+                </div>
             </div>
 
         </div>
         {changeDp && <div className="dp-form-container">
-            <DpForm setFalse={() => setChangeDp(false)}/>
+            <DpForm setFalse={() => setChangeDp(false)} />
         </div>}
 
     </>

@@ -6,6 +6,8 @@ const authentication = require("../middleware/authentication");
 
 //TO GET ALL POSTS
 router.get("/posts", authentication, controller.get);
+//TO GET ALL USER POSTS
+router.get("/posts/:id", authentication, controller.getUserPosts);
 //TO CREATE NEW POST
 router.post("/post", authentication, controller.post);
 //TO UPDATE LIKES
