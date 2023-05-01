@@ -15,6 +15,18 @@ export function getAllPost() {
         .catch(err => alert(err.message));
 }
 
+export function getAllUserPost(id) {
+
+    return fetch(`${BASE_URL}/posts/${id}`, {
+        method: "GET",
+        headers: {
+            "Authorization": getToken()
+        }
+    })
+        .then(res => res.json())
+        .catch(err => alert(err.message));
+}
+
 export function addNewPost(post) {
     return fetch(`${BASE_URL}/post`, {
         method: "POST",

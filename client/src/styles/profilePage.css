@@ -42,8 +42,15 @@
 
 .userPosts {
     display: flex;
-    flex-flow: row wrap;
-    justify-content: space-around;
+    justify-content: start;
+    padding: 0 100px;
+}
+
+.userPosts .posts-grid {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(5, 249px);
+    grid-column-gap: calc((100% - (5 * 249px)) / 4);
 }
 
 .userPosts .post-container {

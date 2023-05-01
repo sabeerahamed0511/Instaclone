@@ -8,7 +8,6 @@ export default function PostviewContext({ children }) {
     const [user, setUser] = useState({});
     const [posts, setPosts] = useState([]);
     const [preview, setPreview] = useState("");
-
     function updatePosts(post) {
         setPosts(posts.map(ex => {
             if(post._id === ex._id) return post
@@ -22,6 +21,10 @@ export default function PostviewContext({ children }) {
             return true
         }))
     }
+
+    useEffect(() => {
+        if(getCurrentUser()) setUser(getCurrentUser());
+    }, []);
 
     return <UserList.Provider value={{
         user,

@@ -7,16 +7,16 @@ import { useContext } from "react";
 import { UserList } from "../../contexts/PostviewContext";
 import { useState } from "react";
 
-export default function UserPostProfile({ postFromUser }) {
+export default function UserPostProfile({ postFromUser, updateUserPost, deleteUserPostList }) {
     const [post, setPost] = useState({ ...postFromUser, boo: false })
     const { name, location, likes, description, date, PostImage, _id, boo } = post;
     const { user, updatePosts, deletePost } = useContext(UserList);
-
     function likePicture() {
         updateLikes(_id, user._id)
             .then(res => {
                 if (res.status === "Success") {
                     updatePosts(res.post);
+                    updateUserPost(res.post);
                 }
             })
             .catch(err => alert(err.message))
@@ -26,6 +26,7 @@ export default function UserPostProfile({ postFromUser }) {
         deleteUser(_id)
         .then(res => {
             if (res.status === "Success") {
+                deleteUserPostList(post);
                 deletePost(post);
                 setPost(ex => ({...ex, boo : false}));
             }
@@ -70,7 +71,7 @@ export default function UserPostProfile({ postFromUser }) {
                     <span className='date'>{date}</span>
                 </div>
 
-                <div className='like'>{likes.length} likes</div>
+                <div className='like'>{postFromUser.likes.length} likes</div>
 
                 <p className='description'>
                     {description}
