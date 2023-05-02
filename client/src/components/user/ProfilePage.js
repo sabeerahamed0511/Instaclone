@@ -9,6 +9,11 @@ import { BASE_URL, getAllUserPost } from "../../utils/api-util";
 import { getCurrentUser, getToken } from "../../utils/tokenStorage";
 import { useNavigate } from "react-router-dom";
 
+import heart_icon from "../../images/heart_icon.png"
+import rocket_icon from "../../images/rocket_icon.png"
+import more_icon from "../../images/more_icon.svg"
+import USerPostGrid from "./UserPostGrid";
+
 export function ProfilePage() {
 
     const navigate = useNavigate();
@@ -17,6 +22,7 @@ export function ProfilePage() {
     let [userPosts, setUserPosts] = useState([]);
     const [changeDp, setChangeDp] = useState(false);
     const [loader, setLoader] = useState(true);
+    const [eachPost, setEachPost] = useState(null);
 
     useEffect(() => {
         if (!getToken()) navigate("/login");
@@ -54,9 +60,48 @@ export function ProfilePage() {
             </header>
             <div className="userPosts">
                 {loader ? <div className="post-loader" ></div> :
-                    <div className="posts-grid" >
-                        {userPosts.map(post => {
-                            return <UserPostProfile key={post._id} postFromUser={post}
+                    // <div className="posts-grid" >
+                    //     {userPosts.map(post => {
+                    //         return <UserPostProfile key={post._id} postFromUser={post}
+                    //             updateUserPost={(data) => {
+                    //                 setUserPosts(userPosts.map(ex => {
+                    //                     if (data._id === ex._id) return data
+                    //                     return ex
+                    //                 }))
+                    //             }}
+                    //             deleteUserPostList={(data) => {
+                    //                 setUserPosts(userPosts.filter(ex => {
+                    //                     if (data._id === ex._id) return false
+                    //                     return true
+                    //                 }))
+                    //             }} />
+                    //     })}
+                    // </div>
+                    <div className="post-grid-container">
+                        {
+                            userPosts.map((post, ind) => {
+                                return <USerPostGrid key={post._id} postFromUser={post} ind={ind} setInd={num => setEachPost(num)} />
+                            })
+                        }
+                    </div>
+
+                }
+            </div>
+
+        </div>
+
+        {
+            (eachPost !== null) &&
+            <div className="each-post-container">
+                <div className="each-post">
+                    <div className="cancel-icon-container" onClick={() => setEachPost(null)}><ion-icon name="close"></ion-icon></div>
+                    {
+                        eachPost !== 0 ?
+                        <div className="arrow-icon-container" onClick={() => setEachPost(eachPost - 1)}><ion-icon name="chevron-back"></ion-icon></div> :
+                        <div></div>
+                    }
+                    {/*  */}
+                    <UserPostProfile postFromUser={userPosts[eachPost]}
                                 updateUserPost={(data) => {
                                     setUserPosts(userPosts.map(ex => {
                                         if (data._id === ex._id) return data
@@ -69,11 +114,16 @@ export function ProfilePage() {
                                         return true
                                     }))
                                 }} />
-                        })}
-                    </div>}
+                    {/*  */}
+                    {
+                        eachPost !== userPosts.length - 1 ?
+                        <div className="arrow-icon-container" onClick={() => setEachPost(eachPost + 1)}><ion-icon name="chevron-forward"></ion-icon></div> :
+                        <div></div>
+                    }
+                </div>
             </div>
+        }
 
-        </div>
         {changeDp && <div className="dp-form-container">
             <DpForm setFalse={() => setChangeDp(false)} />
         </div>}

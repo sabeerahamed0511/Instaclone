@@ -7,9 +7,9 @@ import { useContext } from "react";
 import { UserList } from "../../contexts/PostviewContext";
 import { useState } from "react";
 
-export default function UserPostProfile({ postFromUser, updateUserPost, deleteUserPostList }) {
-    const [post, setPost] = useState({ ...postFromUser, boo: false })
-    const { name, location, likes, description, date, PostImage, _id, boo } = post;
+export default function UserPostProfile({ postFromUser, updateUserPost, deleteUserPostList}) {
+    const [boo, setBoo] = useState(false)
+    const { name, location, likes, description, date, PostImage, _id} = postFromUser;
     const { user, updatePosts, deletePost } = useContext(UserList);
     function likePicture() {
         updateLikes(_id, user._id)
@@ -26,16 +26,16 @@ export default function UserPostProfile({ postFromUser, updateUserPost, deleteUs
         deleteUser(_id)
         .then(res => {
             if (res.status === "Success") {
-                deleteUserPostList(post);
-                deletePost(post);
-                setPost(ex => ({...ex, boo : false}));
+                deleteUserPostList(postFromUser);
+                deletePost(postFromUser);
+                setBoo(false);
             }
         })
         .catch(err => alert(err.message))
     }
-
     return <>
-        <div className='post-container'>
+
+         <div className='post-container'>
 
             <section className='post-header'>
                 <p>
@@ -43,11 +43,11 @@ export default function UserPostProfile({ postFromUser, updateUserPost, deleteUs
                     <span className='place'>{location}</span>
                 </p>
                 {!boo ?
-                    <div className='img-container' onClick={() => setPost(ex => ({...ex, boo : true}))}>
+                    <div className='img-container' onClick={() => setBoo(true)}>
                         <img src={more_icon} alt="rocket_icon" />
                     </div> :
                     <div className="more">
-                        <div className="icon-container" onClick={() => setPost(ex => ({...ex, boo : false}))}><ion-icon name="chevron-up"></ion-icon></div>
+                        <div className="icon-container" onClick={() => setBoo(false)}><ion-icon name="chevron-up"></ion-icon></div>
                         <div className="icon-container"><ion-icon name="create"></ion-icon></div>
                         <div className="icon-container" onClick={deleteUserPost}><ion-icon name="trash"></ion-icon></div>
                     </div>
@@ -77,7 +77,7 @@ export default function UserPostProfile({ postFromUser, updateUserPost, deleteUs
                     {description}
                 </p>
             </section>
-        </div>
+        </div> 
 
     </>
 }

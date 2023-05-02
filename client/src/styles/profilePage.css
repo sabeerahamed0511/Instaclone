@@ -43,9 +43,123 @@
 .userPosts {
     display: flex;
     justify-content: center;
-    padding: 0 100px;
+    
+}
+/* ------------------------------- */
+
+.userPosts .post-grid-container {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 80%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 5px;
 }
 
+.each-post-container {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, .6);
+    display: flex;
+    align-items: center;
+}
+
+.each-post-container .each-post {
+    position: relative;
+    width: 100%;
+    height: 60%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+}
+
+.each-post-container .each-post .arrow-icon-container,
+.each-post-container .each-post .cancel-icon-container {
+    font-size: 32px;
+    font-weight: bold;
+    color: white;
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.each-post-container .each-post .arrow-icon-container:hover,
+.each-post-container .each-post .cancel-icon-container:hover {
+    background-color: #fff6f6;
+    color: gray;
+}
+
+.each-post-container .each-post .cancel-icon-container {
+    position: absolute;
+    top: 0;
+    right: 20px;
+}
+
+.userPosts .post-grid-container .post-img-container {
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    position: relative;
+}
+
+.userPosts .post-grid-container .post-img-container .likes-div {
+    position: absolute;
+    inset: 0;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 22px;
+}
+
+.userPosts .post-grid-container .post-img-container:hover .likes-div {
+    display: flex;
+    background: rgba(0, 0, 0, .3);
+    cursor: pointer;
+}
+
+.userPosts .post-grid-container .post-img-container img {
+    object-fit: cover;
+    height: 100%;
+    width: 100%;
+}
+
+@media screen and (max-width : 600px) {
+    .userPosts .post-grid-container {
+        width: 100%;
+    }
+}
+
+@media screen and (min-width : 600px) and (max-width : 800px) {
+    .userPosts .post-grid-container {
+        width: 90%;
+    }
+}
+
+@media screen and (min-width : 800px) and (max-width : 1000px) {
+    .userPosts .post-grid-container {
+        width: 80%;
+    }
+}
+
+@media screen and (min-width : 1000px) and (max-width : 1200px) {
+    .userPosts .post-grid-container {
+        width: 70%;
+    }
+}
+
+@media screen and (min-width : 1200px){
+    .userPosts .post-grid-container {
+        width: 60%;
+    }
+}
+
+
+/* ---------------------------- */
 .userPosts .posts-grid {
     width: 100%;
     display: grid;
@@ -53,11 +167,11 @@
     grid-column-gap: calc((100% - (5 * 249px)) / 4);
 }
 
-.userPosts .post-container {
+.post-container {
     position: relative;
 }
 
-.userPosts .post-container .more {
+.post-container .more {
     position: absolute;
     right: 0;
     top: 0;
@@ -67,7 +181,7 @@
     box-shadow: 0 0 2px gray;
 }
 
-.userPosts .post-container .more .icon-container {
+.post-container .more .icon-container {
     margin-top: 5px;
     cursor: pointer;
 }
