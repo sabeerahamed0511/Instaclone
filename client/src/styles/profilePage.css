@@ -1,5 +1,13 @@
+.profilePage-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
 .profilePage-container header {
     display: flex;
+    min-width: 400px;
     justify-content: center;
     align-items: center;
     border-bottom: 1px solid green;
@@ -57,6 +65,7 @@
 }
 
 .each-post-container {
+    z-index: 15;
     position: fixed;
     inset: 0;
     background: rgba(0, 0, 0, .6);
@@ -129,30 +138,35 @@
 }
 
 @media screen and (max-width : 600px) {
+    .profilePage-container header,
     .userPosts .post-grid-container {
         width: 100%;
     }
 }
 
 @media screen and (min-width : 600px) and (max-width : 800px) {
+    .profilePage-container header,
     .userPosts .post-grid-container {
         width: 90%;
     }
 }
 
 @media screen and (min-width : 800px) and (max-width : 1000px) {
+    .profilePage-container header,
     .userPosts .post-grid-container {
         width: 80%;
     }
 }
 
 @media screen and (min-width : 1000px) and (max-width : 1200px) {
+    .profilePage-container header,
     .userPosts .post-grid-container {
         width: 70%;
     }
 }
 
 @media screen and (min-width : 1200px){
+    .profilePage-container header,
     .userPosts .post-grid-container {
         width: 60%;
     }
@@ -318,3 +332,133 @@
         transform: rotate(360deg);
     }
 }
+
+/* new post card */
+
+.each-post-container .each-post .post-container {
+    margin-top: 15px;
+    width: 375px;
+    min-height: 250px;
+    border: 1px solid gainsboro;
+    border-radius: 5px;
+    box-shadow: 1px 1px 4px gray;
+    background: white;
+  }
+  
+  .post-container .post-header {
+    width: 100%;
+    height: 40px;
+    padding: 0 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .post-container .post-header .userDpAndName {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .post-container .post-header .userDpAndName .img-container#dp {
+    margin-right: 5px;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    border: .5px solid green;
+    overflow: hidden;
+  }
+  
+  .post-container .post-header p {
+    line-height: 10px;
+  }
+  
+  .post-container .post-header .img-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 20px;
+    height: 100%;
+    cursor: pointer;
+  }
+  
+  .post-container .post-header .img-container img {
+    width: 100%;
+  }
+  
+  .post-container .post-header p .name {
+    display: inline-block;
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 3px;
+  }
+  
+  .post-container .post-header p .place {
+    font-size: 12px;
+    color: grey;
+  }
+  
+  .post-container .post-header p .dot {
+    font-size: 10px;
+    font-weight: bolder;
+  }
+  
+  .each-post-container .each-post .post-container .post-img {
+    background-color: gainsboro;
+    text-align: center;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+  
+  .each-post-container .each-post .post-container .post-img img {
+    height: 100%;
+    width: 100%;
+    object-fit: scale-down;
+  }
+  
+  .post-footer .like-share-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 10px;
+  }
+  
+  .post-footer .like-share-container .like-share-button {
+    display: flex;
+  }
+  
+  .post-footer .like-share-container .img-container {
+    width: 15px;
+    height: 15px;
+    margin-right: 10px;
+  }
+  
+  .post-footer .like-share-container .img-container img {
+    max-width: 100%;
+  }
+  
+  .post-footer .like-share-container .date {
+    font-size: 12px;
+    color: rgb(61, 61, 61);
+  }
+  
+  .post-footer .like {
+    font-size: 10px;
+    color: grey;
+    padding-left: 10px;
+  }
+  
+  .post-footer .description {
+    margin: 0;
+    font-size: 14px;
+    padding: 5px 10px 10px;
+    font-weight: bold;
+  }
+
+  @media screen and (max-width : 600px) {
+
+    .each-post-container .each-post .post-container {
+        width: 60%;
+      }
+  }

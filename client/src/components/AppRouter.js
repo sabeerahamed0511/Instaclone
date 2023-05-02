@@ -16,10 +16,10 @@ export default function AppRouter() {
             <Route path="/" element={<LandingPage />} />
             <Route path="/register" element={<SignupForm />} />
             <Route path="/login" element={<LoginForm />} />
-            <Route path="/user/:id" element={<ProfilePage />} />
             <Route path="posts" element={<Postview/>} >
                 <Route path="all" element={<AllPosts />} />
                 <Route path="new" element={<NewPost/>} />
+                <Route path=":id" element={<ProfilePage />} />
             </Route>
         </Routes>
     </BrowserRouter>
