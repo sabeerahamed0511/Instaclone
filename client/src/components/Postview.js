@@ -31,8 +31,13 @@ export default function Postview() {
                         deleteCurrentUser();
                         navigate("/login");
                     }}>Log-Out</button>
+                    <div className='img-container home'>
+                        <Link to={"all"} >
+                        <span><ion-icon name="home-outline"></ion-icon></span>
+                        </Link>
+                    </div>
                     <div className='img-container' id='dp'>
-                        <Link to={`../user/${user._id}`} >
+                        <Link to={`${user._id}`} >
                         {user.profile_picture ?
                         <img src={user.profile_picture.url} alt="dp" /> :
                         <img src={DP} alt="dp" /> }

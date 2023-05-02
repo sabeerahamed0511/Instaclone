@@ -60,23 +60,6 @@ export function ProfilePage() {
             </header>
             <div className="userPosts">
                 {loader ? <div className="post-loader" ></div> :
-                    // <div className="posts-grid" >
-                    //     {userPosts.map(post => {
-                    //         return <UserPostProfile key={post._id} postFromUser={post}
-                    //             updateUserPost={(data) => {
-                    //                 setUserPosts(userPosts.map(ex => {
-                    //                     if (data._id === ex._id) return data
-                    //                     return ex
-                    //                 }))
-                    //             }}
-                    //             deleteUserPostList={(data) => {
-                    //                 setUserPosts(userPosts.filter(ex => {
-                    //                     if (data._id === ex._id) return false
-                    //                     return true
-                    //                 }))
-                    //             }} />
-                    //     })}
-                    // </div>
                     <div className="post-grid-container">
                         {
                             userPosts.map((post, ind) => {
