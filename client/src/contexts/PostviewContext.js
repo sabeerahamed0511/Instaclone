@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useState } from "react";
+import React, { createContext, useEffect, useRef, useState } from "react";
 import { getAllPost, updateUser } from "../utils/api-util";
 import { getCurrentUser, setCurrentUser } from "../utils/tokenStorage";
 
@@ -8,6 +8,11 @@ export default function PostviewContext({ children }) {
     const [user, setUser] = useState({});
     const [posts, setPosts] = useState([]);
     const [preview, setPreview] = useState("");
+
+    const [loading, setLoading] = useState(true);
+    const [pageNumber, setPageNumber] = useState(1);
+    const [hasMore, setHasMore] = useState(true);
+
     function updatePosts(post) {
         setPosts(posts.map(ex => {
             if(post._id === ex._id) return post
@@ -27,13 +32,19 @@ export default function PostviewContext({ children }) {
     }, []);
 
     return <UserList.Provider value={{
+        loading,
+        setLoading,
+        pageNumber,
+        setPageNumber,
+        hasMore,
+        setHasMore,
         user,
         addUser: (data) => {
             setCurrentUser(data);
             setUser(data);
         },
         posts: posts,
-        addOnInitial : (data) => setPosts(data),
+        addOnInitial : (data) => setPosts(pre => ([...pre, ...data])),
         addPost: (post) => {
             const updated = [post, ...posts];
             setPosts(updated);

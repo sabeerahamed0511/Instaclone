@@ -3,9 +3,9 @@ import { getToken, setCurrentUser } from "./tokenStorage";
 export const BASE_URL = "http://localhost:5000"
 // export const BASE_URL = "https://instaclone-server-8j4r.onrender.com"
 
-export function getAllPost() {
+export function getAllPost(pageNumber) {
 
-    return fetch(`${BASE_URL}/posts`, {
+    return fetch(`${BASE_URL}/posts?page=${pageNumber}`, {
         method: "GET",
         headers: {
             "Authorization": getToken()

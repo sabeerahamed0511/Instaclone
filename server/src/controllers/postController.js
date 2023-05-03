@@ -6,9 +6,13 @@ const cloudinary = require("../middleware/cloudinary");
 const controller = {};
 
 controller.get = async (req, res) => {
+    let page = req.query.page;
     try {
         let posts = await Post.find();
-        res.status(200).json({ status: "Success", data: posts });
+        let start = (page * 5) - 5;
+        let end = page * 5;
+        let slicedPosts = posts.slice(start, end)
+        res.status(200).json({ status: "Success", data: slicedPosts });
     } catch (err) {
         res.status(400).json({ status: "Failed", message: err.message });
     }
@@ -17,8 +21,8 @@ controller.get = async (req, res) => {
 controller.getUserPosts = async (req, res) => {
     try {
         let user = await User.findById(req.params.id);
-        if(!user) return res.status(404).json({status : "Failed", message : "Invalid user"});
-        let posts = await Post.find({user : user._id});
+        if (!user) return res.status(404).json({ status: "Failed", message: "Invalid user" });
+        let posts = await Post.find({ user: user._id });
         res.status(200).json({ status: "Success", data: posts });
     } catch (err) {
         res.status(400).json({ status: "Failed", message: err.message });
@@ -27,13 +31,13 @@ controller.getUserPosts = async (req, res) => {
 
 controller.post = async (req, res) => {
     try {
-        let uploadedFile = await cloudinary.v2.uploader.upload(req.body.PostImage, {folder: "INSTACLONE-POSTS" });
+        let uploadedFile = await cloudinary.v2.uploader.upload(req.body.PostImage, { folder: "INSTACLONE-POSTS" });
 
         let newPost = await new Post({
             ...req.body,
             PostImage: {
-                url : uploadedFile.secure_url,
-                id : uploadedFile.public_id
+                url: uploadedFile.secure_url,
+                id: uploadedFile.public_id
             }
         })
         newPost = await newPost.save();
