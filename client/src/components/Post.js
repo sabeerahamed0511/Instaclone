@@ -7,10 +7,10 @@ import { useContext } from "react";
 import { UserList } from "../contexts/PostviewContext";
 
 export default function Post({ post, index, length }) {
-    
+
     const DP = "https://thumbs.dreamstime.com/b/default-avatar-profile-icon-social-media-user-vector-default-avatar-profile-icon-social-media-user-vector-portrait-176194876.jpg";
     const { name, location, likes, description, date, PostImage, _id } = post;
-    const { user, updatePosts, loading, setPageNumber, hasMore} = useContext(UserList);
+    const { user, updatePosts, loading, setPageNumber, hasMore } = useContext(UserList);
     const [dp, setDp] = useState(null);
     function likePicture() {
         updateLikes(_id, user._id)
@@ -24,26 +24,26 @@ export default function Post({ post, index, length }) {
 
     useEffect(() => {
         updateUser(post.user)
-        .then(res => {
-            if(res.status === "Success") {
-                setDp(res.user.profile_picture.url);
-            }
-        })
+            .then(res => {
+                if (res.status === "Success") {
+                    setDp(res.user.profile_picture.url);
+                }
+            })
     })
 
     const lastPost = useRef();
     const lastPostRef = useCallback(node => {
-        if(!hasMore) return
-        if(loading) return
-        if(lastPost.current) lastPost.current.disconnect();
+        if (!hasMore) return
+        if (loading) return
+        if (lastPost.current) lastPost.current.disconnect();
         lastPost.current = new IntersectionObserver(entry => {
-            if(entry[0].isIntersecting) setPageNumber(ex => (ex + 1));
-        }, {threshold : 1} );
-        if(node) lastPost.current.observe(node);
+            if (entry[0].isIntersecting) setPageNumber(ex => (ex + 1));
+        }, { threshold: 1 });
+        if (node) lastPost.current.observe(node);
     }, [loading])
 
     return <>
-        <div className='post-container' ref={(index + 1 === length)? lastPostRef : null}>
+        <div className='post-container' ref={(index + 1 === length) ? lastPostRef : null}>
             <section className='post-header'>
                 <div className="userDpAndName">
                     <div className='img-container' id='dp'>
@@ -62,7 +62,13 @@ export default function Post({ post, index, length }) {
             </section>
 
             <section className='post-img' onDoubleClick={likePicture}>
-                <img src={PostImage.url} alt='Not available' />
+                {
+                    (PostImage.type === "image") ?
+                        <img src={PostImage.url} alt='Not available' /> :
+                        <video controls>
+                            <source src={PostImage.url} alt='Not available' />
+                        </video>
+                }
             </section>
 
             <section className='post-footer'>

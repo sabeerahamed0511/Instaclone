@@ -44,7 +44,8 @@ controller.post = async (req, res) => {
                 ...req.body,
                 PostImage: {
                     url: req.file.path,
-                    id: req.file.filename
+                    id: req.file.filename,
+                    type: req.file.mimetype.split("/")[0]
                 }
             })
             newPost = await newPost.save();

@@ -7,9 +7,9 @@ import { useContext } from "react";
 import { UserList } from "../../contexts/PostviewContext";
 import { useState } from "react";
 
-export default function UserPostProfile({ postFromUser, updateUserPost, deleteUserPostList}) {
+export default function UserPostProfile({ postFromUser, updateUserPost, deleteUserPostList }) {
     const [boo, setBoo] = useState(false)
-    const { name, location, likes, description, date, PostImage, _id} = postFromUser;
+    const { name, location, likes, description, date, PostImage, _id } = postFromUser;
     const { user, updatePosts, deletePost } = useContext(UserList);
     function likePicture() {
         updateLikes(_id, user._id)
@@ -24,18 +24,18 @@ export default function UserPostProfile({ postFromUser, updateUserPost, deleteUs
 
     function deleteUserPost() {
         deleteUser(_id)
-        .then(res => {
-            if (res.status === "Success") {
-                deleteUserPostList(postFromUser);
-                deletePost(postFromUser);
-                setBoo(false);
-            }
-        })
-        .catch(err => alert(err.message))
+            .then(res => {
+                if (res.status === "Success") {
+                    deleteUserPostList(postFromUser);
+                    deletePost(postFromUser);
+                    setBoo(false);
+                }
+            })
+            .catch(err => alert(err.message))
     }
     return <>
 
-         <div className='post-container'>
+        <div className='post-container'>
 
             <section className='post-header'>
                 <p>
@@ -55,7 +55,13 @@ export default function UserPostProfile({ postFromUser, updateUserPost, deleteUs
             </section>
 
             <section className='post-img' onDoubleClick={likePicture}>
-                <img src={PostImage.url} alt='Not available' />
+                {
+                    (PostImage.type === "image") ?
+                        <img src={PostImage.url} alt='Not available' /> :
+                        <video controls>
+                            <source src={PostImage.url} alt='Not available' />
+                        </video>
+                }
             </section>
 
             <section className='post-footer'>
@@ -77,7 +83,7 @@ export default function UserPostProfile({ postFromUser, updateUserPost, deleteUs
                     {description}
                 </p>
             </section>
-        </div> 
+        </div>
 
     </>
 }
