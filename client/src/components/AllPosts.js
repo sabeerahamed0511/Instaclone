@@ -26,7 +26,7 @@ export default function AllPosts() {
                 if (res.status === "Success") {
                     setLoader(false);
                     setLoading(false)
-                    addOnInitial(res.data.reverse());
+                    addOnInitial(res.data);
                     setHasMore(res.data.length > 0);
                     
                 }

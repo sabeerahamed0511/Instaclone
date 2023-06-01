@@ -1,7 +1,8 @@
 require("dotenv").config();
 const Post = require("../models/post");
 const User = require("../models/user");
-const cloudinary = require("../middleware/cloudinary");
+// const cloudinary = require("../middleware/cloudinary");
+const { upload, multer } = require("../middleware/imageUpload");
 
 const controller = {};
 
@@ -9,6 +10,7 @@ controller.get = async (req, res) => {
     let page = req.query.page;
     try {
         let posts = await Post.find();
+        posts = posts.reverse();
         let start = (page * 5) - 5;
         let end = page * 5;
         let slicedPosts = posts.slice(start, end)
@@ -31,18 +33,24 @@ controller.getUserPosts = async (req, res) => {
 
 controller.post = async (req, res) => {
     try {
-        let uploadedFile = await cloudinary.v2.uploader.upload(req.body.PostImage, { folder: "INSTACLONE-POSTS" });
-
-        let newPost = await new Post({
-            ...req.body,
-            PostImage: {
-                url: uploadedFile.secure_url,
-                id: uploadedFile.public_id
+        // let uploadedFile = await cloudinary.v2.uploader.upload(req.body.PostImage, { folder: "INSTACLONE-POSTS" });
+        upload(req, res, async (err) => {
+            if (err instanceof multer.MulterError) {
+                return res.status(401).json({ status: "Failed", message: err.message });
+            } else if (err) {
+                return res.status(401).json({ status: "Failed", message: err.message });
             }
+            let newPost = await new Post({
+                ...req.body,
+                PostImage: {
+                    url: req.file.path,
+                    id: req.file.filename
+                }
+            })
+            newPost = await newPost.save();
+            await User.findByIdAndUpdate(req.body.user, { $push: { posts: newPost._id } });
+            res.status(201).json({ status: "Success", data: newPost });
         })
-        newPost = await newPost.save();
-        await User.findByIdAndUpdate(req.body.user, { $push: { posts: newPost._id } });
-        res.status(201).json({ status: "Success", data: newPost });
     } catch (err) {
         res.status(400).json({ status: "Failed", message: err.message });
     }
