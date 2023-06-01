@@ -29,6 +29,8 @@ export default function UserPostProfile({ postFromUser, updateUserPost, deleteUs
                     deleteUserPostList(postFromUser);
                     deletePost(postFromUser);
                     setBoo(false);
+                } else {
+                    alert(res.message);
                 }
             })
             .catch(err => alert(err.message))

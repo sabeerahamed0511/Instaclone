@@ -1,7 +1,7 @@
 require("dotenv").config();
 const Post = require("../models/post");
 const User = require("../models/user");
-// const cloudinary = require("../middleware/cloudinary");
+const cloudinary = require("../middleware/cloudinary");
 const { upload, multer } = require("../middleware/imageUpload");
 
 const controller = {};
