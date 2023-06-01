@@ -56,7 +56,7 @@ export default function NewPost() {
             }}>X</button>
             <form onSubmit={formValidation} >
                 <div className="input-field">
-                    <input type={"file"} id="file" name="PostImage" accept="image/*" required onChange={(e) => {
+                    <input type={"file"} id="file" name="PostImage" accept="image/*, video/*" required onChange={(e) => {
                         addPreview(URL.createObjectURL(e.target.files[0]));
                         setFormData(pre => {
                             return {
@@ -64,10 +64,11 @@ export default function NewPost() {
                                 image : e.target.files[0]
                             }
                         })
+                        console.log(e.target.files[0])
                     }} />
                 </div>
                 <div id="preview-container">
-                    {preview ? <ImagePreview /> : null}
+                    {preview ? <ImagePreview type={formData.image.type.split("/")[0]} /> : null}
                 </div>
                 <div className="input-field row-1">
                     <input type={"text"} id="author" name="name" placeholder="Author" value={formData.name} readOnly required onChange={(e) => {

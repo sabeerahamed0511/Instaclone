@@ -187,6 +187,10 @@
   max-height: 100%;
 }
 
+.post-container .post-img video {
+  max-height: 100%;
+}
+
 .post-footer .like-share-container {
   display: flex;
   justify-content: space-between;
@@ -336,7 +340,8 @@
   border-radius: 15px;
 }
 
-#preview-img-container img {
+#preview-img-container img,
+#preview-img-container video {
   max-height: 100%;
 }
 
