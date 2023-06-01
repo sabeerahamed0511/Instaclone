@@ -32,10 +32,8 @@ export function addNewPost(post) {
         method: "POST",
         headers: {
             "Authorization": getToken(),
-            "content-type" : "application/json",
-            "accept" : "application/json"
         },
-        body: JSON.stringify(post)
+        body: post
     })
         .then(res => res.json())
         .catch(err => alert(err.message));

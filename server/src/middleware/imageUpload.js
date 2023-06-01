@@ -1,19 +1,21 @@
 require("dotenv").config();
+const cloudinary = require("./cloudinary").v2;
 const multer = require("multer");
-const {GridFsStorage} = require("multer-gridfs-storage");
+const { CloudinaryStorage} = require("multer-storage-cloudinary");
 
-const Storage = new GridFsStorage({
-    url : process.env.DATABASE_URL+process.env.DB_NAME,
-    file : (req, file ) => {
+const Storage = new CloudinaryStorage({
+    cloudinary : cloudinary,
+    params : (req, file ) => {
         return {
-            bucketName : process.env.DB_COLLECTION,
-            filename : `${Date.now()}_${file.originalname}`
+            folder : "INSTACLONE-POSTS",
+            public_id : `${Date.now()}_${file.originalname}`,
+            resource_type : "auto"
         }
     } 
 })
 
 const upload = multer({
-    storage : Storage
-})
+    storage : Storage,
+}).single("PostImage")
 
-module.exports = upload;
+module.exports = {upload, multer};
