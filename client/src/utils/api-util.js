@@ -42,12 +42,7 @@ export function addNewPost(post) {
 export function updateUserDp(dp, id) {
     return fetch(`${BASE_URL}/users/${id}`, {
         method: "PUT",
-        headers: {
-            "Authorization": getToken(),
-            "content-type" : "application/json",
-            "accept" : "application/json"
-        },
-        body: JSON.stringify({dp})
+        body: dp
     })
         .then(res => res.json())
         .catch(err => alert(err.message));
@@ -75,7 +70,11 @@ export function addNewUser(data) {
         body: JSON.stringify(data)
     })
         .then(res => res.json())
-        .catch(err => alert(err.message));
+        .catch(err => {
+            if(err.message !== "Failed to fetch") {
+                alert(err.message);
+            }
+        });
 }
 
 export function updateUser(id) {
@@ -110,5 +109,9 @@ export function loginToAccount(data) {
         body: JSON.stringify(data)
     })
         .then(res => res.json())
-        .catch(err => alert(err.message));
+        .catch(err => {
+            if(err.message !== "Failed to fetch") {
+                alert(err.message);
+            }
+        }) 
 }

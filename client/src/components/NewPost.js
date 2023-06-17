@@ -64,7 +64,6 @@ export default function NewPost() {
                                 image : e.target.files[0]
                             }
                         })
-                        console.log(e.target.files[0])
                     }} />
                 </div>
                 <div id="preview-container">

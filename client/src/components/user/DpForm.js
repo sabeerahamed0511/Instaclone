@@ -16,21 +16,10 @@ export default function DpForm({ setFalse }) {
     const { user, addUser, addPreview, preview } = useContext(UserList);
     const [formData, setFormData] = useState({ image: "" });
 
-    function base64(file) {
-        return new Promise((res, rej) => {
-            let fileReader = new FileReader();
-            fileReader.readAsDataURL(file);
-            fileReader.onload = () => {
-                res(fileReader.result)
-            };
-        })
-    }
-
     async function formValidation(e) {
         e.preventDefault();
         setBoo(false);
-        // const dp = new FormData(e.target);
-        const dp = await base64(formData.image);
+        const dp = new FormData(e.target);
 
         updateUserDp(dp, user._id)
             .then(res => {
@@ -61,7 +50,7 @@ export default function DpForm({ setFalse }) {
                     }} />
                 </div>
                 <div className="preview-container">
-                    {preview ? <ImagePreview /> : null}
+                    {preview ? <ImagePreview type={formData.image.type.split("/")[0]} /> : null}
                 </div>
                 <div className="btn-container" >
                     <button type="submit">{boo ? "change" : <span className="loader"></span>}</button>
