@@ -23,6 +23,10 @@ export default function LoginForm() {
         setBoo(false);
         loginToAccount(loginUser)
             .then(res => {
+                if(!res) {
+                    setBoo(true);
+                    return alert("Server Connection Timeout, Please try again.")
+                }
                 if (res.status === "Success") {
                     setToken(res.token);
                     addUser(res.user);

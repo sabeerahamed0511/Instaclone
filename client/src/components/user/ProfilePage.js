@@ -39,7 +39,7 @@ export function ProfilePage() {
         const currentUser = getCurrentUser();
         if (currentUser) addUser(currentUser);
     }, []);
-
+    
     return <>
         <div className="profilePage-container" >
             <header>
@@ -92,6 +92,7 @@ export function ProfilePage() {
                                     }))
                                 }}
                                 deleteUserPostList={(data) => {
+                                    if(userPosts.length === 1) setEachPost(null);
                                     setUserPosts(userPosts.filter(ex => {
                                         if (data._id === ex._id) return false
                                         return true

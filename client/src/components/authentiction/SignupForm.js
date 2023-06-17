@@ -19,6 +19,10 @@ export default function SignupForm() {
         setBoo(false);
         addNewUser(newUser)
             .then(res => {
+                if (!res) {
+                    setBoo(true);
+                    return alert("Server Connection Timeout, Please try again.")
+                }
                 if (res.status === "Success") {
                     setNewUser({
                         name: "",

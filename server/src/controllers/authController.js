@@ -3,6 +3,7 @@ const User = require("../models/user");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const cloudinary = require("../middleware/cloudinary");
+const { upload, multer } = require("../middleware/dpUpload");
 
 const controller = {};
 
@@ -54,18 +55,25 @@ controller.login = async (req, res) => {
 }
 
 controller.updateDp = async (req, res) => {
-    try {
-        let uploadedFile = await cloudinary.v2.uploader.upload(req.body.dp, { folder: "INSTACLONE-DP" });
-        let user = await User.findByIdAndUpdate(req.params.id, {
-            profile_picture: {
-                url: uploadedFile.secure_url,
-                id: uploadedFile.public_id
-            }
-        }, { new: true });
-        res.status(201).json({ status: "Success", user });
-    } catch (err) {
-        res.status(400).json({ status: "Failed", message: err.message });
-    }
+    upload(req, res, async (err) => {
+        if (err instanceof multer.MulterError) {
+            return res.status(401).json({ status: "Failed", message: err.message });
+        } else if (err) {
+            return res.status(401).json({ status: "Failed", message: err.message });
+        }
+        try {
+            let user = await User.findByIdAndUpdate(req.params.id, {
+                profile_picture: {
+                    url: req.file.path,
+                    id: req.file.filename,
+                    type: req.file.mimetype.split("/")[0]
+                }
+            }, { new: true });
+            res.status(201).json({ status: "Success", user });
+        } catch (err) {
+            res.status(400).json({ status: "Failed", message: err.message });
+        }
+    })
 }
 
 controller.deleteDp = async (req, res, next) => {
